@@ -1,0 +1,57 @@
+version: "3.7"
+
+services:
+  api:
+    build:
+      context: ./api
+    expose:
+      - 3001
+    ports:
+      - 3001:3001
+    depends_on:
+      - mariadb
+    links:
+      - mariadb:mariadb
+    volumes:
+      - ./api:/usr/src/api
+    environment:
+      - PORT=3001
+      - MYSQL_HOST=mariadb
+      - MYSQL_PORT=3306
+      - MYSQL_DB=mytube_development
+      - MYSQL_USER=mytube
+      - MYSQL_PASSWORD=mytube
+      - RAILS_ENV=development
+      - SECRET_KEY_BASE=somethingsecret
+
+  worker:
+    build:
+      context: ./api
+    entrypoint: bundle exec rake jobs:work
+    depends_on:
+      - mariadb
+      - api
+    links:
+      - mariadb:mariadb
+    volumes:
+      - ./api:/usr/src/api
+    environment:
+      - MYSQL_HOST=mariadb
+      - MYSQL_PORT=3306
+      - MYSQL_DB=mytube_development
+      - MYSQL_USER=mytube
+      - MYSQL_PASSWORD=mytube
+      - RAILS_ENV=development
+      - SECRET_KEY_BASE=somethingsecret
+
+  mariadb:
+    image: mariadb:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_USER=mytube
+      - MYSQL_PASSWORD=mytube
+      - MYSQL_DATABASE=mytube_development
+    expose:
+      - 3306
+    ports:
+      - 3306:3306

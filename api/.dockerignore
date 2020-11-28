@@ -1,0 +1,14 @@
+log/
+storage/
+spec/
+tmp/
+public/
+
+*.log
+*.db
+
+.dockerignore
+.gitignore
+.rspec
+Dockerfile
+README.md
