@@ -1,7 +1,6 @@
 log/
 storage/
 spec/
-tmp/
 public/
 
 *.log
