@@ -7,10 +7,10 @@ class DownloadJob < ApplicationJob
     video = Video.find(video_id)
     options = {
       url: video.url,
-      filename: "public/videos/#{video.channel.name} [#{video.channel.remote_id}]/Season #{video.published_at.year}/#{video.published_at.strftime("S%YE%m%d")} - %(title)s [%(id)s].%(ext)s"
+      filename: "public/videos/%(uploader)s [%(channel_id)s]/%(playlist_index)s - %(title)s [%(id)s].%(ext)s"
     }
 
-    line = Terrapin::CommandLine.new("youtube-dl -i --write-thumbnail --write-sub", "-o :filename :url")
+    line = Terrapin::CommandLine.new("youtube-dl -i --write-info-json --write-thumbnail --write-sub", "-o :filename :url")
     command = line.command(filename: options[:filename], url: options[:url])
     Rails.logger.debug "#{self.class.name}: Running #{command}"
     line.run(filename: options[:filename], url: options[:url])
