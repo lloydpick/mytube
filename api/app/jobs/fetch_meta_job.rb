@@ -8,7 +8,6 @@ class FetchMetaJob < ApplicationJob
     provider_videos = channel.provider.entity.send("check_#{channel.category}", channel.remote_id)
     
     provider_videos.each do |entry|
-      puts entry.inspect
       Rails.logger.debug "#{self.class.name}: Handling #{entry[:id]}"
       video = channel.videos.find_or_initialize_by(remote_id: entry[:id])
       video.title = entry[:title]
