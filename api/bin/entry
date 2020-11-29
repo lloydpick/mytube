@@ -1,8 +1,7 @@
 #!/bin/sh
 set -e
 
-bundle exec rake db:migrate
-bundle exec rake db:seed
+bundle exec rake db:setup
 bundle exec rake recurring:init
 bundle exec puma -C config/puma.rb
 

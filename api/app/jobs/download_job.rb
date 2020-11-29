@@ -7,7 +7,7 @@ class DownloadJob < ApplicationJob
     video = Video.find(video_id)
     options = {
       url: video.url,
-      filename: "public/videos/#{video.channel.name}/Season #{video.published_at.year}/#{video.channel.name} - #{video.published_at.to_date} - %(title)s.%(ext)s"
+      filename: "public/videos/#{video.channel.name} [#{video.channel.remote_id}]/Season #{video.published_at.year}/#{video.published_at.strftime("S%YE%m%d")} - %(title)s [%(id)s].%(ext)s"
     }
 
     line = Terrapin::CommandLine.new("youtube-dl -i --write-thumbnail --write-sub", "-o :filename :url")
